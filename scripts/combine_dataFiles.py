@@ -26,6 +26,15 @@ def combine_csv_files(file1, file2, output_filename):
         df2 = pd.read_csv(file2)
     except Exception as e:
         return f"Error reading input files: {e}"
+    
+    #Check file length -- sometimes EF file does not match the number of pages in the full text. 
+    len_df1 = len(df1)
+    len_df2 = len(df2)
+    if len_df1 != len_df2:
+        if len_df1 > len_df2:
+            print(f"Warning! Length of {file1} ({len_df1} rows) is greater than {file2} ({len_df2} rows).")
+        else:
+            print(f"Warning! Length of {file2} ({len_df2} rows) is greater than {file1} ({len_df1} rows).")
 
     # Replace "No body data" with blank cells in file2 (extracted features file)
     non_page_cols = [col for col in df2.columns if col != 'page']
